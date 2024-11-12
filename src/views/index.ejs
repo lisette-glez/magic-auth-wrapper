@@ -3,12 +3,56 @@
   <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="flex justify-center items-center h-screen">
-      <h1 class="text-4xl font-bold text-red-900">
-        Welcome to Express.js with Tailwind CSS!
-      </h1>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+  </head>  
+  <body class="bg-purple-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <h2 class="text-2xl font-bold mb-7 text-center">Sign in to your app</h2>
+      <form>
+        <div class="mb-4">         
+          <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-200" placeholder="Enter your email">
+        </div>
+        <div class="flex items-center my-4">
+          <div class="flex-grow border-t border-purple-300"></div>
+          <span class="mx-4 text-purple-700">OR</span>
+          <div class="flex-grow border-t border-purple-300"></div>
+        </div>
+        <div class="mb-7">         
+          <input type="tel" id="phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-200" placeholder="Enter your phone number">
+        </div>
+        <button type="submit" class="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500">Continue</button>
+        <div class="flex items-center my-4">
+          <div class="flex-grow border-t border-purple-300"></div>
+          <span class="mx-4 text-purple-700">OR</span>
+          <div class="flex-grow border-t border-purple-300"></div>
+        </div>
+        <div class="space-y-3 mb-4">
+          <button class="w-full mb-4 flex items-center justify-center px-4 py-2 border border-purple-500 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-purple-100">
+            <i class="fab fa-google"></i> 
+            <span class="ms-3">Continue with Google</span>
+          </button>
+          <button class="w-full flex items-center justify-center px-4 py-2 border border-purple-500 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700  hover:bg-purple-100">
+            <i class="fab fa-github"></i>
+            <span class="ms-3">Continue with GitHub</span> 
+          </button>
+        </div>     
+      </form>
     </div>
+    <script src="https://kit.fontawesome.com/42241cb19f.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script>
+      const phoneInputField = document.querySelector("#phone");
+      const phoneInput = window.intlTelInput(phoneInputField, {
+        initialCountry: "auto",
+        separateDialCode: true,
+        geoIpLookup: callback => {
+            fetch("https://ipapi.co/json")
+              .then(res => res.json())
+              .then(data => callback(data.country_code))
+              .catch(() => callback("us"));
+          },       
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+      });
+    </script>
   </body>
 </html>

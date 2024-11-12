@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* phone input with flags class */
+.iti {
+    display: block!important;
+}
