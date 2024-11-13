@@ -20,7 +20,7 @@
         <div class="mb-7">         
           <input type="tel" id="phone" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-200" placeholder="Enter your phone number">
         </div>
-        <button type="submit" class="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500">Continue</button>
+        <button type="submit" id="submitBtn" class="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500">Continue</button>
         <div class="flex items-center my-4">
           <div class="flex-grow border-t border-purple-300"></div>
           <span class="mx-4 text-purple-700">OR</span>
@@ -40,7 +40,8 @@
     </div>
     <script src="https://kit.fontawesome.com/42241cb19f.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/magic-sdk@28.14.0/dist/magic.min.js"></script>
+    <script type="text/javascript">          
       const phoneInputField = document.querySelector("#phone");
       const phoneInput = window.intlTelInput(phoneInputField, {
         initialCountry: "auto",
@@ -52,6 +53,31 @@
               .catch(() => callback("us"));
           },       
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+      });
+
+      // Initialize Magic SDK
+      const magic = new Magic('pk_live_D211F9C4DBE7EA2D');
+
+      document.getElementById('submitBtn').addEventListener('click', async (event) => {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const didToken = await magic.auth.loginWithEmailOTP({ email });
+        
+        // Send the DID token to your backend for verification
+        fetch('/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${didToken}`
+          },
+          body: JSON.stringify({ email })
+        }).then(response => {
+          if (response.ok) {            
+            console.log('User logged in successfully');
+          } else {           
+            console.error('Login failed');
+          }
+        });
       });
     </script>
   </body>
