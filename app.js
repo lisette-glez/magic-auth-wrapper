@@ -4,10 +4,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var app = express();
+const session = require('express-session');
+
+// Configure session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET, // Replace with your own secret key
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set to true if using HTTPS
+}));
 
 var indexRouter = require('./src/routes/index');
+var profileRouter = require('./src/routes/profile');
 var usersRouter = require('./src/routes/users');
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'src/views'));
@@ -20,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/css')));
 
 app.use('/', indexRouter);
+app.use('/profile', profileRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

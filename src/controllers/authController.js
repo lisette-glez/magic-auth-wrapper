@@ -10,9 +10,10 @@ exports.authenticate = async (req, res) => {
 
   try {
     // Validate the DID token with Magic Admin SDK
-    await magic.token.validate(didToken);
+    magic.token.validate(didToken);
     const metadata = await magic.users.getMetadataByToken(didToken);
-    res.status(200).json({ valid: true, user: metadata });
+    req.session.user = metadata; // Store user data in session
+    res.status(200).json({ valid: true });
   } catch (error) {
     // If validation fails, send an unauthorized error
     console.error('DID Token validation failed:', error);

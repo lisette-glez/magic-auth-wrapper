@@ -64,21 +64,27 @@
         const didToken = await magic.auth.loginWithEmailOTP({ email });
         
         // Send the DID token to your backend for verification
-        fetch('/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${didToken}`
-          },
-          body: JSON.stringify({ email })
-        }).then(response => {
-          if (response.ok) {            
-            console.log('User logged in successfully');
-          } else {           
+        try {
+          const response = await fetch('/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${didToken}`
+            },
+            body: JSON.stringify({ email })
+          });
+
+          const data = await response.json();
+
+          if (data.valid) {
+            window.location.href = '/profile';
+          } else {
             console.error('Login failed');
           }
-        });
-      });
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });       
     </script>
   </body>
 </html>
