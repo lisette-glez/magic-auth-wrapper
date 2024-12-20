@@ -61,17 +61,23 @@
       document.getElementById('submitBtn').addEventListener('click', async (event) => {
         event.preventDefault();
         const email = document.getElementById('email').value;
-        const didToken = await magic.auth.loginWithEmailOTP({ email });
+        const phone = phoneInput.getNumber();
         
-        // Send the DID token to your backend for verification
+        let didToken;
+        if(email) {
+          didToken = await magic.auth.loginWithEmailOTP({ email });
+        }else {         
+          didToken = await magic.auth.loginWithSMS({ phoneNumber: phone });
+        }
+        
+        // // Send the DID token to your backend for verification
         try {
           const response = await fetch('/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${didToken}`
-            },
-            body: JSON.stringify({ email })
+            },           
           });
 
           const data = await response.json();
