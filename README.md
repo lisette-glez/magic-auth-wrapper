@@ -3,7 +3,7 @@
 This repository is a starting point for implementing passwordless authentication using [Magic’s SDKs](https://magic.link) with Express.js and Tailwind CSS. It provides a lightweight wrapper for integrating Magic’s powerful authentication tools into your web application.
 
 <p align="center">  
-    <img width="1090" alt="Screenshot of Magic Auth Wrapper" src="/public/demo.png"> 
+    <img width="1090" alt="Screenshot of Magic Auth Wrapper" src="/public/magic-login.png"> 
 </p>
 
 ### 🚀 Some Features
